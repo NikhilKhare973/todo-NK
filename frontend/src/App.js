@@ -13,6 +13,7 @@ import { authActions } from './store';
 
 
 const App = () => {
+  axios.defaults.withCredentials = true;
   const dispatch = useDispatch();
   useEffect(() => {
     const id = sessionStorage.getItem("id");
