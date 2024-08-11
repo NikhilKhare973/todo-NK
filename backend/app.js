@@ -32,7 +32,7 @@ app.use("/api/v2", list);
 
 const app = express()
 app.use(cors({
-        origin: ["https://todo-nk-frontend.vercel.app/"],
+        origin: ["https://todo-nk-frontend.vercel.app"],
         methods: ["POST","GET"],
         credentials: true
     }));
