@@ -30,13 +30,13 @@ app.use("/api/v1", auth);
 app.use("/api/v2", list);
 
 
-// const app1 = express()
-// app1.use(cors({
-    //     origin: [""],
-    //     methods: ["POST","GET"],
-    //     credentials: true
-    // }));
-    // app1.use(express.json());
+const app = express()
+app.use(cors({
+        origin: ["https://todo-nk-frontend.vercel.app/"],
+        methods: ["POST","GET"],
+        credentials: true
+    }));
+    app.use(express.json());
     
     app.get("/", (req, res) => {
         app.use(express.static(path.resolve(__dirname, "frontend", "build")));
