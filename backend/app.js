@@ -20,6 +20,9 @@ mongoose.connect(DB, {
     console.log(`connection successful`);
 }).catch((err) => console.log(err));
 
+app.get("/", (req,res)  => {
+    res.json("Hello");
+});
 
                                       
 
