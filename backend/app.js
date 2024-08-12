@@ -7,7 +7,7 @@ const path = require("path");
 const auth = require("./routes/auth");
 const list = require("./routes/list");
 app.use(express.json());
-app.use(cors());
+app.use(cors(corsConfig));
 
 const DB = 'mongodb+srv://nikhilkhare212:Nikhil123@cluster0.gv4ygej.mongodb.net/';
 
@@ -31,11 +31,11 @@ app.use("/api/v2", list);
 
 
 const app = express()
-app.use(cors({
+const corsConfig =  {
         origin: ["https://todo-nk-frontend.vercel.app"],
-        methods: ["POST","GET"],
+        methods: ["GET","POST", "PUT", "DELETE"],
         credentials: true
-    }));
+    };
     app.use(express.json());
     
     app.get("/", (req, res) => {
