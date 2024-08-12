@@ -1,6 +1,6 @@
 const express = require("express");
 const mongoose = require('mongoose'); 
-// const app = express();
+const app = express();
 const cors = require("cors");
 require("./conn/conn"); 
 const path = require("path");
@@ -31,7 +31,6 @@ app.use("/api/v1", auth);
 app.use("/api/v2", list);
 
 
-const app = express()
 const corsConfig =  {
         origin: ["*"],
         methods: ["GET","POST", "PUT", "DELETE"],
