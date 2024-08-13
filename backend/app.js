@@ -7,7 +7,8 @@ const path = require("path");
 const auth = require("./routes/auth");
 const list = require("./routes/list");
 app.use(express.json());
-app.use(cors(corsConfig));
+app.use(cors());
+// app.use(cors(corsConfig));
 // app.options("", cors(corsConfig));
 
 const DB = 'mongodb+srv://nikhilkhare212:Nikhil123@cluster0.gv4ygej.mongodb.net/';
