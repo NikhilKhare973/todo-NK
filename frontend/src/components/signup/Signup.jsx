@@ -1,140 +1,63 @@
-import React, { useEffect, useState } from "react";
-import { ToastContainer, toast } from 'react-toastify';
-import "./todo.css";
-import TodoCards from './TodoCards';
-import Update from './Update';
-import 'react-toastify/dist/ReactToastify.css';
+import React, { useState } from 'react'
+import "./signup.css"; 
 
+// import HeadingComp from "./HeadingComp"; 
 import axios from "axios";
-let id = sessionStorage.getItem("id");
-let toUpdateArray = [];
+import { useNavigate } from 'react-router-dom';
 
-const Todo = () => {
-    const [Inputs, setInputs] = useState({
-      title: "", 
-      body: "",
-    });
-    const [Array, setArray] = useState([]);
-
-    
-    const show = () => {
-      document.getElementById("textarea").style.display = "block";
-    };
-
-  const change = (e) => {
-      const {name, value } = e.target;
-      setInputs({...Inputs, [name]: value});
+const Signup = () => {
+  const history = useNavigate();
+  const [Inputs, setInputs] = useState({
+    email:"",
+    username: "",
+    password: "",
+  });
+  const change = (e) =>{
+    const {name, value } = e.target;
+    setInputs({ ...Inputs, [name]: value});
   };
-  
-  const submit = async () => {
-    if (Inputs.title === "" || Inputs.body === "") {
-      toast.error("Title Or Body Can't Be Empty");
-    } else {
-      if (id) {
-        await axios
-          .post(`http://localhost:1000/api/v2/addTask`, {
-            title: Inputs.title,
-            body: Inputs.body,
-            id: id,
-          })
-          .then((response) => {
-            console.log(response);
+
+  const submit = async (e) => {
+    e.preventDefault();
+    await axios
+      .post(`http://localhost:1000/api/v1/register`, Inputs)
+      .then((response) => {
+        if (response.data.message === "User Already Exists") {
+          alert(response.data.message);
+        } else {
+          alert(response.data.message);
+          setInputs({
+            email: "",
+            username: "",
+            password: "",
           });
-        setInputs({ title: "", body: "" });
-        toast.success("Your Task Is Added");
-      } else {
-        setArray([...Array, Inputs]);
-        setInputs({ title: "", body: "" });
-        toast.success("Your Task Is Added");
-        toast.error("Your Task Is Not Saved ! Please SignUp");
-      }
-    }
-  };
-  // console.log(Inputs);
-
-  const del = async(Cardid) => {
-    if(id){
-      await axios.delete(`http://localhost:1000/api/v2/deleteTask/${Cardid}`,{
-        data: {id: id},
-     })
-     .then(() => {
-       toast.success("Your Task Is Deleted");
-     });
-    }
-    else{
-      toast.error("Please SignUp First");
-    }
-   
+          history("/signin");
+        }
+      });
   };
 
-  const dis = (value) =>{
-    document.getElementById("todo-update").style.display = value;
-  };
-
-  const update = (value) => {
-    toUpdateArray = Array[value];
-  };
-
-  useEffect(() => {
-    if (id) {
-      const fetch = async () => {
-        await axios
-          .get(`http://localhost:1000/api/v2/getTasks/${id}`)
-          .then((response) => {
-            setArray(response.data.list);
-          });
-      };
-      fetch();
-    }
-  }, [submit]);
-
-
-  return ( 
-    <>
-  <div className='todo' > 
-      <ToastContainer/>
-      <div className='todo-main container d-flex justify-content-center align-items-center flex-column ' >
-            <div className='d-flex flex-column todo-inputs-div w-100 p-3' >
-              <input type="text" name='title' placeholder='TITLE' className='my-2 p-2 todo-inputs' onClick={show} onChange={change} value={Inputs.title} />
-              <textarea type="text" name='body' placeholder='BODY' id='textarea' className='p-2 todo-inputs' onChange={change} value={Inputs.body} />
+  return (
+    <div className='signup'>
+      <div className="container">
+        <div className="row">
+            <div className="col-lg-8 column  d-flex justify-conetent-center align-items-center  "> 
+                <div className=" margin d-flex flex-column w-100 p-3 ">
+                    <input name='email'  className='p-2 my-3 input-signup ' type="email" placeholder='Enter Your Email ' onChange={change} value={Inputs.email} /> 
+                    <input name='username' className='p-2 my-3 input-signup ' type="username" placeholder='Enter Your Usename' onChange={change} value={Inputs.username} />  
+                    <input name='password' className='p-2 my-3 input-signup ' type="password" placeholder='Enter Your Password' onChange={change} value={Inputs.password} />    
+                    <button className='btn-sign-up p-2' onClick={submit} > Sign Up</button>
+                </div>     
             </div>
-            <div className='w-lg-50 w-100 d-flex justify-content-end my-3' >
-            <button className='home-btn px-2 py-1' onClick={submit} >Add</button> 
+            <div className="col-lg-4 column col-left d-lg-flex justify-conetent-center align-items-center d-none "> 
+                {/* <HeadingComp first="Sign" second='up' /> */}
+                <h1 className='text-center sign-in-heading' >
+                    Sign <br /> Up
+                </h1>
             </div>
-      </div>
-
-      <div className="todo-body">
-        <div className="container-fluid">
-          <div className="row ">
-            
-            {Array && Array.map((item, index) => ( 
-              <div className="col-lg-3 col-11 mx-lg-5 mx-3 my-2" key={index}>
-                <TodoCards 
-                  title={item.title} 
-                  body={item.body} 
-                  id={item._id} 
-                  delid={ del } 
-                  display={ dis } 
-                  updateId={index}  
-                  toBeUpdate={update}
-                />
-              </div>
-            ))}
-            </div>
-            
-            
         </div>
       </div>
-   </div>
-
-    <div className="todo-update " id="todo-update">
-      <div className="container update">
-         <Update display={ dis } update={toUpdateArray} />
-      </div>
-      
     </div>
-    </>
   );
 };
 
-export default Todo;
+export default Signup;
