@@ -37,7 +37,7 @@ app.use("/api/v2", list);
 //         methods: ["GET","POST", "PUT", "DELETE"],
 //         credentials: true
 //     };
-    app.use(express.json());
+    // app.use(express.json());
     
     app.get("/", (req, res) => {
         app.use(express.static(path.resolve(__dirname, "frontend", "build")));
