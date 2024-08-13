@@ -10,10 +10,9 @@ let id = sessionStorage.getItem("id");
 let toUpdateArray = [];
 
 const Todo = () => {
-    axios.defaults.withCredentials = true;
     const [Inputs, setInputs] = useState({
       title: "", 
-      body: ""
+      body: "",
     });
     const [Array, setArray] = useState([]);
 
@@ -33,7 +32,7 @@ const Todo = () => {
     } else {
       if (id) {
         await axios
-          .post(`https://todo-nk-api.vercel.app/api/v2/addTask`, {
+          .post(`http://localhost:1000/api/v2/addTask`, {
             title: Inputs.title,
             body: Inputs.body,
             id: id,
@@ -55,7 +54,7 @@ const Todo = () => {
 
   const del = async(Cardid) => {
     if(id){
-      await axios.delete(`https://todo-nk-api.vercel.app/api/v2/deleteTask/${Cardid}`,{
+      await axios.delete(`http://localhost:1000/api/v2/deleteTask/${Cardid}`,{
         data: {id: id},
      })
      .then(() => {
@@ -80,7 +79,7 @@ const Todo = () => {
     if (id) {
       const fetch = async () => {
         await axios
-          .get(`https://todo-nk-api.vercel.app/api/v2/getTasks/${id}`)
+          .get(`http://localhost:1000/api/v2/getTasks/${id}`)
           .then((response) => {
             setArray(response.data.list);
           });
