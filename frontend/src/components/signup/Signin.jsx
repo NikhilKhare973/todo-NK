@@ -25,7 +25,7 @@ const SignIn= () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        `https://todo-nk-api.vercel.app/api/api/v1/signin`,
+        `http://localhost:1000/api/v1/signin`,
         Inputs
       );
       console.log(response.data);
@@ -42,6 +42,7 @@ const SignIn= () => {
       console.error("An error occurred:", error);
     }
   };
+
 
   return (
     <div className='signup'>
